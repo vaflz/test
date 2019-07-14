@@ -1,0 +1,30 @@
+#!/bin/bash
+# chkconfig: 2345 20 80
+# description: checking load
+# Source function library.
+ 
+case "$1" in
+start)
+	echo "$LOG  START" >> /home/parallels/Desktop/test/test.log
+/home/parallels/Desktop/test/test.sh &
+   echo $!>/home/parallels/Desktop/test/test.pid
+   ;;
+stop)
+echo "$LOG FINISH" >> /home/parallels/Desktop/test/test.log
+   kill `cat /home/parallels/Desktop/test/test.pid`
+   rm /home/parallels/Desktop/test/test.pid
+   ;;
+status)
+   if [ -e /home/parallels/Desktop/test/test.pid ]; then
+      echo running, pid=`cat /home/parallels/Desktop/test/test.pid`
+   else
+      echo not running
+      exit 1
+   fi
+   ;;
+*)
+   echo "Usage: $0 {start|stop|status|}"
+esac
+ 
+exit 0
+
